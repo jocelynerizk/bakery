@@ -1,0 +1,24 @@
+/**
+ * Handles the events in the public facing window.
+ */
+jQuery(document).ready( function($) {
+
+    "use strict";
+    /**
+     * Initiate the wow script.
+     */
+    new WOW().init();
+
+    /**
+     * Masonry layout for block.
+     */
+    $( '.cv-block' ).each( function() {
+        var Pid = $(this).attr('id');
+        if( Pid === 'cv-masonry-post-layout' ) {
+            var container = $(this).find( '.cv-post-wrapper' );
+            container.imagesLoaded( function() {
+                container.masonry();
+            })
+        }
+    });
+});
