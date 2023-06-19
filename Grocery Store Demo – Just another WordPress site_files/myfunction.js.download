@@ -1,0 +1,135 @@
+jQuery(document).ready( function() {
+
+   jQuery(".mywishlist").click( function() {
+
+		var post_id = jQuery(this).attr("data-value"),
+        $this   = jQuery(this);
+
+	  jQuery.ajax({
+         type : "post",
+         dataType : "json",
+         url : myAjax.ajaxurl,
+         data : {action: "mywishlist", post_id : post_id},
+		 beforeSend: function() {
+			//jQuery('.error-'+post_id).after('<div class="loading"></div>');
+        $this.addClass('loading');
+		},
+     success: function(json) {
+			 $this.removeClass('loading');
+			jQuery('.error-'+post_id).after('<div class="alert alert-success">'+json['success']+'</div>');
+			
+			var explode = function(){
+				jQuery('.alert').remove();
+				
+			}
+			setTimeout(explode, 2000);
+        }
+      })   
+
+   });
+  
+   jQuery(".removewhlist").click( function() {
+		 var post_id = jQuery(this).attr("data-value"),
+        $this   = jQuery(this);
+	  jQuery.ajax({
+         type : "post",
+         dataType : "json",
+         url : myAjax.ajaxurl,
+         data : {action: "removewhlist", post_id : post_id},
+          beforeSend: function() {
+            $this.addClass('loading');
+          },
+         success: function(json) {
+            //location.reload();
+            $this.parents('li.product').remove();
+            jQuery('.removewhlist').removeClass('loading');
+         }
+      })   
+   });
+ /* compare product */
+  jQuery(".compareproduct").click( function() {
+		var post_id = jQuery(this).attr("data-value")
+	  jQuery.ajax({
+         type : "post",
+         dataType : "json",
+         url : myAjax.ajaxurl,
+         data : {action: "compare", post_id : post_id},
+		  beforeSend: function() {
+			jQuery('.compareproduct').after('<div  class="loading-compare-single"></div>');
+		},
+         success: function(json) {
+		jQuery('.loading-compare-single').remove();	 
+        jQuery('.compareproduct').after('<div class="alert alert-success">'+json['success']+'</div>');
+		 var comparesingle = function(){
+				jQuery('.alert').remove();
+				
+			}
+			setTimeout(comparesingle, 2000);
+		
+	     }
+      })   
+   });
+  /* compare loop product */
+ jQuery(".compare-loop").click( function() {
+		  var post_id = jQuery(this).attr("data-value"),
+        $this   = jQuery(this);
+	  jQuery.ajax({
+         type : "post",
+         dataType : "json",
+         url : myAjax.ajaxurl,
+         data : {action: "compare", post_id : post_id},
+		  beforeSend: function() {
+			$this.addClass('loading');
+		},
+        success: function(json) {
+		jQuery('.loading-compare').remove();	 
+    $this.removeClass('loading');
+    
+       jQuery('.error1-'+post_id).after('<div class="alert alert-success">'+json['success']+'</div>');
+	    var compareloop = function(){
+				jQuery('.alert').remove();
+				
+			}
+			setTimeout(compareloop, 2000);
+	   
+	     }
+      })   
+   });  
+       jQuery(".removecompare").click( function() {
+		   var post_id = jQuery(this).attr("data-value"),
+           $this   = jQuery(this);
+    	  jQuery.ajax({
+             type : "post",
+             dataType : "json",
+             url : myAjax.ajaxurl,
+             data : {action: "removecompare", post_id : post_id},
+             success: function(json) {
+               $this.parents('tr').remove();
+                //location.reload();
+             }
+          })   
+       });
+   
+ })
+
+ 
+ jQuery(document).ready(function($) {    
+    jQuery('#upload_image_button').click(function() {
+        formfield = $('#link_image').attr('name'); 
+        tb_show('', 'media-upload.php?type=image&amp;TB_iframe=true');
+        return false;
+    });
+	jQuery('#upload_image_button1').click(function() {
+        formfield = $('#link_image').attr('name'); 
+        tb_show('', 'media-upload.php?type=image&amp;TB_iframe=true');
+        return false;
+    });
+
+    window.send_to_editor = function(html) {
+        imgurl = $('img',html).attr('src');
+        imgsrc = '<img src="'+imgurl+'">';
+        jQuery('#link_image').val(imgurl); // this populates a text field with the image url
+        jQuery('#my-link-img').html(imgsrc); // this prints the image into a div
+        tb_remove();
+    }
+});
